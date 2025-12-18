@@ -39,11 +39,11 @@ architecture datapath_controller of riscv_datapath_controller is
     -- FIM DO PROGRAMA 1
     -- ============================================
 
-    -- Definição do Banco de Registradores
+    -- Definição do banco de registradores
     type reg_file_type is array(0 to 7) of STD_LOGIC_VECTOR(15 downto 0);
     signal Regs : reg_file_type := (others => (others => '0'));
 
-    -- Registradores de Estado
+    -- Registradores de estado
     signal PC          : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
     signal IR          : STD_LOGIC_VECTOR(15 downto 0);
     signal alu_out_reg : STD_LOGIC_VECTOR(15 downto 0); -- Registrador de saída da ULA
@@ -69,8 +69,8 @@ architecture datapath_controller of riscv_datapath_controller is
 
     -- === Sinais da Parte de Controle (Controller) ===
     signal s_pc_we, s_ir_we, s_reg_we, s_mem_we, s_alu_out_we : STD_LOGIC;
-    signal s_pc_sel : STD_LOGIC; -- 0 = PC+1, 1 = Branch Target
-    signal s_wb_sel : STD_LOGIC; -- 0 = ALU_Out, 1 = JAL PC (não usado explicitamente neste mux simplificado)
+    signal s_pc_sel : STD_LOGIC;
+    signal s_wb_sel : STD_LOGIC;
 
 begin
 
@@ -86,7 +86,7 @@ begin
     imm_from_ir    <= IR(9 downto 4);
     offset_from_ir <= signed(IR(9 downto 4));
 
-    -- Saídas do Banco de Registradores
+    -- Saídas do banco de registradores
     data_rs1 <= Regs(rs1);
     data_rs2 <= Regs(rs2);
     data_rd  <= Regs(rd);
@@ -105,14 +105,14 @@ begin
     -- Mux de escrita no registrador
     reg_write_data <= alu_out_reg;
 
-    -- ULA Combinacional
+    -- ULA combinacional
     alu_comb: process(opcode, data_rs1, data_rs2, imm_from_ir, PC, Mem)
         variable imm_6bit   : STD_LOGIC_VECTOR(5 downto 0);
         variable sw_lw_addr : unsigned(7 downto 0);
     begin
         imm_6bit := imm_from_ir;
         
-        -- Lógica de endereço para SW/LW (Base + Offset)
+        -- Lógica de endereço para SW/LW
         sw_lw_addr := unsigned(data_rs1(7 downto 0)) + unsigned(imm_6bit);
 
         case opcode is
@@ -177,12 +177,12 @@ begin
                     PC <= pc_in;
                 end if;
 
-                -- Atualização do Banco de Registradores (no estado WRITEBACK)
+                -- Atualização do banco de registradores (no estado WRITEBACK)
                 if s_reg_we = '1' then
                     Regs(rd) <= reg_write_data;
                 end if;
 
-                -- Escrita na Memória (no estado EXECUTE para SW)
+                -- Escrita na memória (no estado EXECUTE para SW)
                 -- O endereço vem da saída da ULA (calculado combinacionalmente)
                 if s_mem_we = '1' then
                     Mem(to_integer(unsigned(alu_out_comb(7 downto 0)))) <= data_rd;

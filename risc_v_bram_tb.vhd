@@ -7,7 +7,7 @@ end riscv_bram_tb;
 
 architecture simulation of riscv_bram_tb is
 
-    -- Componente do Processador RISC-V
+    -- Componente do processador RISC-V
     component RiscV16 is
         Port (
             clk              : in  STD_LOGIC;
@@ -20,7 +20,7 @@ architecture simulation of riscv_bram_tb is
         );
     end component;
 
-    -- Componente da Memória BRAM (Gerado pelo IP Catalog / Wizard)
+    -- Componente da Memória BRAM
     component memoria_programa is
         Port (
             clka  : in  STD_LOGIC;
@@ -39,7 +39,7 @@ architecture simulation of riscv_bram_tb is
     signal rst_tb    : STD_LOGIC;
     signal halted_tb : STD_LOGIC;
 
-    -- Sinais para conectar o Processador (DUT) com a BRAM
+    -- Sinais para conectar o processador (DUT) com a BRAM
     signal s_mem_address        : STD_LOGIC_VECTOR(7 downto 0);
     signal s_mem_data_from_bram : STD_LOGIC_VECTOR(15 downto 0);
     signal s_mem_data_to_bram   : STD_LOGIC_VECTOR(15 downto 0);
@@ -47,7 +47,7 @@ architecture simulation of riscv_bram_tb is
 
 begin
 
-    -- Instancia o Processador (Device Under Test)
+    -- Instancia o processador (DUT)
     DUT: RiscV16
     port map (
         clk              => clk_tb,
@@ -59,8 +59,7 @@ begin
         mem_write_enable => s_mem_write_enable
     );
 
-    -- Instancia a Memória BRAM
-    -- Nota: 'wea' na BRAM geralmente é um vetor, por isso mapeamos o bit (0)
+    -- Instancia a memória BRAM
     BRAM_inst: memoria_programa
     port map (
         clka   => clk_tb,

@@ -36,16 +36,13 @@ architecture rtl of RiscV16 is
     signal imm          : STD_LOGIC_VECTOR(5 downto 0);
     signal offset       : SIGNED(5 downto 0);
 
-    -- Sinais da ULA e Controle
+    -- Sinais da ULA e controle
     signal alu_out      : STD_LOGIC_VECTOR(15 downto 0);
     signal write_en     : STD_LOGIC := '0';
     signal write_addr   : INTEGER range 0 to 7;
     signal mem_data_reg : STD_LOGIC_VECTOR(15 downto 0); -- Registrador temporário para LW
 
 begin
-
-    -- O dado de entrada da memória pode ficar fixo no registrador apontado por RD
-    -- A escrita só ocorre efetivamente quando mem_write_enable for '1'
     mem_data_in <= Regs(rd);
 
     process(clk, rst)
@@ -95,11 +92,10 @@ begin
 
                             when "1001" => -- SW
                                 mem_address      <= std_logic_vector(signed(Regs(rs1)) + offset);
-                                -- O dado mem_data_in já está conectado a Regs(rd)
                                 mem_write_enable <= '1'; 
                                 state            <= FETCH;
 
-                            -- Lógica da ULA (Restaurada para funcionamento)
+                            -- Lógica da ULA
                             when "0000" => -- ADD
                                 alu_out <= std_logic_vector(signed(Regs(rs1)) + signed(Regs(rs2)));
                                 state   <= WRITEBACK;

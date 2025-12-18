@@ -23,7 +23,7 @@ architecture riscv_architecture of riscv_tb is
     signal halted_tb : STD_LOGIC;
     signal saida_tb  : STD_LOGIC_VECTOR(15 downto 0);
 
-    -- Definição do período do Clock
+    -- Definição do período do clock
     constant CLK_PERIOD : time := 10 ns;
 
 begin
@@ -37,7 +37,7 @@ begin
         saida_temp => saida_tb
     );
 
-    -- Processo de geração de Clock
+    -- Processo de geração de clock
     clk_process: process
     begin
         clk_tb <= '0';

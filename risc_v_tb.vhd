@@ -7,7 +7,7 @@ end riscv_tb;
 
 architecture riscv_architecture of riscv_tb is
 
-    -- Declaração do Componente (DUT - Device Under Test)
+    -- Declaração do componente (DUT - Device Under Test)
     component riscv is
         Port (
             clk        : in  STD_LOGIC;
@@ -17,7 +17,7 @@ architecture riscv_architecture of riscv_tb is
         );
     end component;
 
-    -- Sinais do Testbench
+    -- Sinais do testbench
     signal clk_tb    : STD_LOGIC := '0';
     signal rst_tb    : STD_LOGIC;
     signal halted_tb : STD_LOGIC;
@@ -37,7 +37,7 @@ begin
         saida_temp => saida_tb
     );
 
-    -- Processo de Geração de Clock
+    -- Processo de geração de clock
     -- O clock para de rodar quando o processador envia o sinal de halted
     clk_process: process
     begin
@@ -52,7 +52,7 @@ begin
         end if;
     end process;
 
-    -- Processo de Estímulo (Reset)
+    -- Processo de estímulo (Reset)
     stimulus_process: process
     begin
         -- Sequência de Reset
