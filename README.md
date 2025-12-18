@@ -37,3 +37,11 @@ This repository contains the VHDL implementation of a RISC-V architecture-based 
 | LUI | U | 1101 | Load Upper Immediate |
 | NOP | N | 1110 | No Operation |
 | HLT | N | 1111 | Halt (Stops the processor) |
+
+## License
+
+Distributed under the MIT License. See `LICENSE.txt` for more information.
+
+## Contact
+
+Leonardo Santos - <leorsantos2003@gmail.com>
