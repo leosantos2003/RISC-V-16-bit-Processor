@@ -6,16 +6,30 @@
 
 This repository contains the VHDL implementation of a RISC-V architecture-based processor, simplified to 16 bits and 16 instructions. The project was developed through three main versions, aiming to explore different techniques of digital design, FPGA synthesis, and computer organization.
 
-## Project versions
+## File structure
 
-* **Version 1:** `risc_v.vhd`. Monolithic version with internal memory. Initial and simplest version of the processor.
+The project is divided into three main implementations:
+
+### 1. Basic RTL implementation (array memory)
+
+Initial version described as a single state machine with memory implemented as an array of registers/LUTs.
+
+* `risc_v.vhd`: Processor source code with internal memory initialized in VHDL.
+* `risc_v_tb.vhd`: Testbench for simulation.
    
-* **Version 2:** `risc_v_bram.vhd`. Version with BRAM support. This version adapts the processor for efficient synthesis in FPGAs, using Block RAMs (BRAM).
-   * BRAMs are dedicated and efficient memory blocks embedded in the FPGA structure, used to store larger volumes of data without consuming the chip's main logic resources (LUTs).
+### 2. Implementation with BRAM (synchronous memory)
 
-* **Version 3:** `risc_v_pc_po.vhd`. Version with Datapath/Controller division. This version focuses on structural organization and good RTL design practices, explicitly separating the hardware into two large blocks.
-   * Datapath: Contains the storage and processing elements. All the combinational logic of the ALU and the sequential logic of the registers reside here.
-   * Controller: Contains only the State Machine (FSM). It generates the control signals that command the Datapath.
+Adapted version to use the FPGA's Block RAM (BRAM), supporting `.coe` initialization files. The FSM was adjusted to wait for synchronous memory reads (`FETCH_WAIT`, `LW_WAIT`).
+
+* `risc_v_bram.vhd`: Processor with interface to external memory.
+* `risc_v_bram_tb.vhd`: Testbench instantiating the processor and the IP Core memory component.
+* `Programs (.coe)`: Memory initialization files for synthesis.
+
+### 3. PC-PO implementation (Control Part - Operational Part)
+Structured version separating the *Data Path* (ALU, Registers, Muxes) from the *Control Unit* (FSM).
+
+* `risc_v_pc_po.vhd`: Contains the `riscv_datapath_controller` entity with the FSM and explicit operational components.
+* `risc_v_pc_po_tb.vhd`: Testbench for the PC-PO version.
 
 ## Supported instructions
 
